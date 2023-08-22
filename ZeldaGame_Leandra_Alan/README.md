@@ -1,26 +1,13 @@
-# Raylib C++ Starter Template
+# Raylib Zelda Game
 
-Raylib C++ Starter Template for Visual Studio Code on Windows.
+Jogo na linguagem C para a disciplina de algoritimos e programação. 
 
-This demo project contains a bouncing ball raylib example program.
+O jogo foi dividido em arquivos de headers para auxiliar e facilitar a leitura da função main.
 
-It works with raylib version 4.5.
-Tested on both Windows 10 and Windows 11.
+Na main, o jogador inicia com uma tela de menu, onde tem 3 opções: 1. iniciar jogo, 2. scoreboard, 3. sair
 
-# Video Tutorial
-
-<p align="center">
-  <img src="preview.jpg" alt="" width="800">
-</p>
-
-<p align="center">
-🎥 <a href="https://www.youtube.com/watch?v=PaAcVk5jUd8">Video Tutorial on YouTube</a>
-</p>
-
-<br>
-<br>
-<p align="center">
-| 📺 <a href="https://www.youtube.com/channel/UC3ivOTE5EgpmF2DHLBmWIWg">My YouTube Channel</a>
-| 🌍 <a href="http://www.educ8s.tv">My Website</a> | <br>
-</p>
-
+  1. ao iniciar um novo jogo,  o objetivo do mesmo é matar todos os monstros com uma espada e resgatar a princesa
+     caso o jogador se encontre com o monstro, ele perde uma vida. Existem obstáculos que impedem o jogador e monstro
+     de passar. Os monstros se movimentam de forma aleatória enquanto o jogador é dominado pelo teclado.
+  2. no scoreboard são exibidos os 5 melhores scores, carregados de um arquivo e salvos de acordo com o ultimo jogo.
+  3. a ultima opção fecha o jogo.
