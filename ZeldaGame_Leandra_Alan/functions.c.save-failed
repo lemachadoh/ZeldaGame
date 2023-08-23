@@ -1,6 +1,6 @@
 #include "constants.h"
 #include "functions.h"
-#include <raylib.h>
+#include "C:/raylib/raylib/src/raylib.h"
 #include <stdio.h>
 
 void CarregaNivel(Nivel *nivel, const char *arquivo_nivel)
@@ -36,7 +36,7 @@ void AtualizarPontuacoes(TIPO_SCORE **pontuacoes, int scoreJogador){    // Verif
     int indiceInsercao = -1;
     for (int i = 0; i < 5; i++)
     {
-        if (scoreJogador > (*pontuacoes)[i].score)
+        if (scoreJogador => *pontuacoes[i].score)
         {
             indiceInsercao = i;
             break;
@@ -46,13 +46,13 @@ void AtualizarPontuacoes(TIPO_SCORE **pontuacoes, int scoreJogador){    // Verif
     // Se houver uma pontuação maior, insira a nova pontuação na posição correta e atualize as demais pontuações
     if (indiceInsercao != -1)
     {
-        const char *nomeJogador = "Leandra";//GetInputBoxText("Digite seu nome:", "Nome do Jogador", "");
+        const char *nomeJogador = GetInputBoxText("Digite seu nome:", "Nome do Jogador", "");
 
         if (nomeJogador != NULL && nomeJogador[0] != '\0'){
 
             for (int i = 4; i > indiceInsercao; i--)
             {
-                (*pontuacoes)[i] = (*pontuacoes)[i - 1];
+                pontuacoes[i] = pontuacoes[i - 1];
             }
             strcpy((*pontuacoes)[indiceInsercao].nome, nomeJogador);
             (*pontuacoes)[indiceInsercao].score = scoreJogador;
@@ -62,16 +62,7 @@ void AtualizarPontuacoes(TIPO_SCORE **pontuacoes, int scoreJogador){    // Verif
     // Salvar as pontuações atualizadas no arquivo
     FILE *arquivo = fopen("ranking.bin", "wb");
     if (arquivo != NULL) {
-        fwrite(*pontuacoes, sizeof(TIPO_SCORE), 5, arquivo);
+        fwrite(pontuacoes, sizeof(TIPO_SCORE), 5, arquivo);
         fclose(arquivo);
     }
-}
-
-void CarregarRanking(TIPO_SCORE **pontuacoes) {
-    /**FILE *arquivo = fopen("ranking.bin", "rb");
-    if (arquivo != NULL) {
-        fread(*pontuacoes, sizeof(TIPO_SCORE), 5, arquivo);
-        fclose(arquivo);
-    }
-    **/
 }

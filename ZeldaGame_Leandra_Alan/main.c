@@ -2,14 +2,13 @@
 #include <C:/raylib/raylib/src/raylib.h>
 #include "constants.h"
 #include "functions.h"
+#include "functions.c"
 #include "gameon.h"
 #include <stdbool.h>
 
 // renderizar as pedras, a princesa e as espadas.
 
-int main()
-{
-
+int main(void){
     int GAME = MENU;
     int selecaoMenu = 0;
     int NivelAtual = 1;
@@ -19,7 +18,7 @@ int main()
     InitWindow(largura, altura, "Zelda - INF");
     SetTargetFPS(60);
 
-    while (WindowShouldClose())
+    while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -30,6 +29,8 @@ int main()
             DrawText("Novo jogo", 100, 200, 20, (selecaoMenu == 0) ? RED : WHITE);
             DrawText("Scoreboard", 100, 240, 20, (selecaoMenu == 1) ? RED : WHITE);
             DrawText("Sair", 100, 280, 20, (selecaoMenu == 2) ? RED : WHITE);
+            EndDrawing();
+
 
             if (IsKeyPressed(KEY_DOWN))
             {
@@ -61,9 +62,39 @@ int main()
                 }
                 break;
             }
+        }else if (GAME == SCOREBOARD){
+            int inicioY = 100;
+            int alturaLinha = 40;
+
+            TIPO_SCORE ranking[5];
+            CarregarRanking(ranking);
+
+            ClearBackground(BLACK);
+            DrawText("Scoreboard", largura / 2 - MeasureText("Scoreboard", 40) / 2, altura / 2 - 100, 40, WHITE);
+
+            // Exibir os scores no ranking
+            for (int i = 0; i < 5; i++)
+            {
+                int posX = largura / 2 - 200; // PosiÁ„o horizontal para o nome
+                DrawText(ranking[i].nome, posX, inicioY + i * alturaLinha, 30, WHITE);
+
+                posX = largura / 2 + 100; // PosiÁ„o horizontal para o score
+                char scoreText[20];
+                sprintf(scoreText, "%d", ranking[i].score);
+                DrawText(scoreText, posX, inicioY + i * altura, 30, WHITE);
+            }
+            DrawText("Pressione ENTER para voltar ao Menu", largura / 2 - MeasureText("Pressione ENTER para voltar ao Menu", 20) / 2, altura - 40, 20, GRAY);
+
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                GAME = MENU;
+            }
         }
-        else if (GAME == NOVO_JOGO)
+        else if (GAME == SAIR)
         {
+            CloseWindow();
+        }
+        else if (GAME == NOVO_JOGO){
             int numMonstros = 10;
             Nivel nivel;
             Vector2 PosicaoPrincesa = {700, 300};
@@ -91,7 +122,7 @@ int main()
             Texture2D espadaDireita = LoadTexture("Texturas/Attack_right.png");
 
             CarregarPontuacoes(pontuacoes);
-            CarregaNivel(&nivel, ArquivoNivel); // Carrega o arquivo do pr√≥ximo n√≠vel
+            CarregaNivel(&nivel, ArquivoNivel); // Carrega o arquivo do prÛximo nÌvel
 
             for (int i = 0; i < 16; i++)
             {
@@ -103,13 +134,13 @@ int main()
                 }
             }
 
-            // inicializar os monstros usando a fun√ß√£o definida em gameon.h
-            InicializarMonstros(monsters, numMonstros); // O segundo argumento √© o n√∫mero de monstros
+            // inicializar os monstros usando a funÁ„o definida em gameon.h
+            InicializarMonstros(monsters, numMonstros); // O segundo argumento È o n˙mero de monstros
             InicializarJogador(&jogador);
             if (!gameOver)
             {
                 GAME = JOGO_EM_ANDAMENTO;
-                // Renderizar plano de fundo do cen√°rio
+                // Renderizar plano de fundo do cen·rio
                 DrawTexture(backGround, 0, 0, WHITE);
 
                 if (!PrincesaResgate)
@@ -181,9 +212,9 @@ int main()
                     // Ativar espada
                     if (IsKeyPressed(KEY_J))
                     {
-                        AtivaEspada(&jogador, monsters, &numMonstros); // Chamar a fun√ß√£o AtivaEspada
+                        AtivaEspada(&jogador, monsters, &numMonstros); // Chamar a funÁ„o AtivaEspada
                         if (jogador.espada == true)
-                        { // condi√ß√£o que verifica se a espada est√° ativada
+                        { // condiÁ„o que verifica se a espada est· ativada
                             switch (jogador.textura)
                             {
                             case DIRECAO_DIREITA:
@@ -214,7 +245,7 @@ int main()
                     NivelAtual++; // proximo nivel
                     if (NivelAtual > NUM_NIVEIS)
                     {
-                        // O jogador completou todos os n√≠veis, mostrar mensagem de vit√≥ria ou encerrar o jogo
+                        // O jogador completou todos os nÌveis, mostrar mensagem de vitÛria ou encerrar o jogo
                         GAME = VITORIA;
                         AtualizarPontuacoes(pontuacoes, jogador.score);
 
@@ -231,9 +262,9 @@ int main()
 
                         // faz leitura de arquivo nivel2.txt
                         sprintf(ArquivoNivel, "nivel%d.txt", NivelAtual);
-                        CarregaNivel(&nivel, ArquivoNivel); // Carrega o arquivo do pr√≥ximo n√≠vel
+                        CarregaNivel(&nivel, ArquivoNivel); // Carrega o arquivo do prÛximo nÌvel
 
-                        // Reiniciar vari√°veis para o pr√≥ximo n√≠vel
+                        // Reiniciar vari·veis para o prÛximo nÌvel
                         InicializarMonstros(monsters, numMonstros);
                         InicializarJogador(&jogador);
                         PrincesaResgate = false; // Reinicia o estado de resgate da princesa
@@ -253,49 +284,17 @@ int main()
                 // Exibir mensagem de game over
                 DrawText("Game Over", largura / 2 - MeasureText("Game Over", 40) / 2, altura / 2 - 40, 40, WHITE);
 
-                // Exibir pontua√ß√£o final
-                DrawText(TextFormat("Pontua√ß√£o Final: %d", jogador.score), largura / 2 - MeasureText("Pontua√ß√£o Final: ", 20) / 2, altura / 2 + 20, 20, RED);
+                // Exibir pontuaÁ„o final
+                DrawText(TextFormat("PontuaÁ„o Final: %d", jogador.score), largura / 2 - MeasureText("PontuaÁ„o Final: ", 20) / 2, altura / 2 + 20, 20, RED);
 
                 GAME = MENU;
             }
         }
-        else if (GAME == SCOREBOARD)
-        {
-            int inicioY = 100;
-            int alturaLinha = 40;
 
-            TIPO_SCORE ranking[5];
-            CarregarRanking(ranking);
 
-            ClearBackground(BLACK);
-            DrawText("Scoreboard", largura / 2 - MeasureText("Scoreboard", 40) / 2, altura / 2 - 100, 40, WHITE);
-
-            // Exibir os scores no ranking
-            for (int i = 0; i < 5; i++)
-            {
-                int posX = largura / 2 - 200; // Posi√ß√£o horizontal para o nome
-                DrawText(ranking[i].nome, posX, inicioY + i * alturaLinha, 30, WHITE);
-
-                posX = largura / 2 + 100; // Posi√ß√£o horizontal para o score
-                char scoreText[20];
-                sprintf(scoreText, "%d", ranking[i].score);
-                DrawText(scoreText, posX, inicioY + i * altura, 30, WHITE);
-            }
-            DrawText("Pressione ENTER para voltar ao Menu", largura / 2 - MeasureText("Pressione ENTER para voltar ao Menu", 20) / 2, altura - 40, 20, GRAY);
-
-            if (IsKeyPressed(KEY_ENTER))
-            {
-                GAME = MENU;
-            }
-        }
-        else if (GAME == SAIR)
-        {
-            CloseWindow();
-        }
-
-        EndDrawing();
     }
 
     CloseWindow();
     return 0;
+    }
 }

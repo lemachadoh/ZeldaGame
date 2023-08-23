@@ -1,7 +1,7 @@
 #ifndef CONSTANTS.H
 #define CONSTANTS.H
 
-#include "C:/raylib/raylib/src/raylib.h"
+#include <raylib.h>
 
 #define INCREMENTO_MOV_MONSTRO 2
 #define largura 1200
@@ -48,15 +48,15 @@ typedef struct {
     int score;
     int vidas;
     bool espada;
-    char orientacao; 
+    char orientacao;
     int nivel;
     int textura;
 } Jogador;
 
-typedef struct 
+typedef struct
 {
     char layout[16][24]; //16 linhas por 24 colunas,
 }Nivel;
 
 
-#endif 
+#endif

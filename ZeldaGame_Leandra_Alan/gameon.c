@@ -1,5 +1,6 @@
 #include "gameon.h"
 #include "constants.h"
+#include <raylib.h>
 
 // Implementação da função de inicialização dos monstros
 void InicializarMonstros(Monstros *monsters, int numMonstros) {
@@ -12,67 +13,67 @@ void InicializarMonstros(Monstros *monsters, int numMonstros) {
 //incializa o jogador
 void InicializarJogador(Jogador *jogador){
     // Inicialização do jogador
-    jogador.posicao = (Vector2){100, 100};
-    jogador.saude = 100;
-    jogador.score = 0; // atualiza com o arquivo score
-    jogador.vidas = 3;
-    jogador.espada = false;
-    jogador.orientacao = 'N';
-    jogador.nivel = 1;
+    (*jogador).posicao = (Vector2){100, 100};
+    (*jogador).saude = 100;
+    (*jogador).score = 0; // atualiza com o arquivo score
+    (*jogador).vidas = 3;
+    (*jogador).espada = false;
+    (*jogador).orientacao = 'N';
+    (*jogador).nivel = 1;
 }
 
 //movimentar o jogador
 void MoverJogador(Jogador *jogador, Nivel nivel){
     // Verificação de limites para o jogador
-        if (jogador.posicao.x < 0)
+        if ((*jogador).posicao.x < 0)
         {
-            jogador.posicao.x = 0;
+            (*jogador).posicao.x = 0;
         }
-        if (jogador.posicao.y < 60)
+        if ((*jogador).posicao.y < 60)
         {
-            jogador.posicao.y = 60;
+            (*jogador).posicao.y = 60;
         }
-        if (jogador.posicao.x > largura - jogador.tamanho.x)
+        if ((*jogador).posicao.x > largura - (*jogador).posicao.x)
         {
-            jogador.posicao.x = largura - jogador.tamanho.x;
+            (*jogador).posicao.x = largura - (*jogador).posicao.x;
         }
-        if (jogador.posicao.y > altura - jogador.tamanho.y)
+        if ((*jogador).posicao.y > altura - (*jogador).posicao.y)
         {
-            jogador.posicao.y = altura - jogador.tamanho.y;
+            (*jogador).posicao.y = altura - (*jogador).posicao.y;
         }
 
         // Movimentação do jogador
-        if (IsKeyDown((KEY_RIGHT && KEY_D)) && !IsCollision((Vector2){jogador.posicao.x + 2, jogador.posicao.y}, nivel))
+        if (IsKeyDown((KEY_RIGHT && KEY_D)) && !IsCollision((Vector2){(*jogador).posicao.x + 2, (*jogador).posicao.y}, nivel))
         {
-            jogador.posicao.x += 2;
-            jogador->textura = DIRECAO_DIREITA;
+            (*jogador).posicao.x += 2;
+            (*jogador).textura = DIRECAO_DIREITA;
         }
         else
         {
             // jogador colidiu com uma pedra, não há movimentos
         }
-        if (IsKeyDown((KEY_LEFT && KEY_A)) && !IsCollision((Vector2){jogador.posicao.x - 2, jogador.posicao.y}, nivel))
+        if (IsKeyDown((KEY_LEFT && KEY_A)) && !IsCollision((Vector2){(*jogador).posicao.x - 2, (*jogador).posicao.y}, nivel))
         {
-            jogador.posicao.x -= 2;
-            jogador->textura = DIRECAO_ESQUERDA;   
+            (*jogador).posicao.x -= 2;
+            (*jogador).textura = DIRECAO_ESQUERDA;
         }
         else
         {
             // jogador colidiu com uma pedra, não há movimentos
         }
-        if (IsKeyDown((KEY_DOWN && KEY_S)) && !IsCollision((Vector2){jogador.posicao.x, jogador.posicao.y + 2}, nivel))
+        if (IsKeyDown((KEY_DOWN && KEY_S)) && !IsCollision((Vector2){(*jogador).posicao.x, (*jogador).posicao.y + 2}, nivel))
         {
-            jogador.posicao.y += 2;
-            jogador->textura = DIRECAO_BAIXO;
+            (*jogador).posicao.y += 2;
+            (*jogador).textura = DIRECAO_BAIXO;
         }
         else
         {
             // jogador colidiu com uma pedra, não há movimentos
         }
-        if (IsKeyDown((KEY_UP && KEY_W)) && !IsCollision((Vector2){jogador.posicao.x, jogador.posicao.y - 2}, nivel))
+        if (IsKeyDown((KEY_UP && KEY_W)) && !IsCollision((Vector2){(*jogador).posicao.x, (*jogador).posicao.y - 2}, nivel))
         {
-            jogador.posicao.y -= 2;
-            ogador->textura = DIRECAO_CIMA;
+            (*jogador).posicao.y -= 2;
+            (*jogador).textura = DIRECAO_CIMA;
         }
         else
         {
@@ -145,16 +146,16 @@ void MoverMonstros(Monstros *monsters, int numMonstros, Nivel nivel){
 void VerificarColisaoMonstros(Jogador *jogador, Monstros *monsters, int numMonstros, bool *gameOver){
     // Verificar colisão do jogador com os monstros
     for (int i = 0; i < numMonstros; i++){
-        if (!(&gameOver) && monsters[i].active && CheckCollisionCircles(jogador->posicao, 10, monsters[i].posicao, 20)){
-            jogador->posicao = (Vector2){100, 100};
+        if (!(&gameOver) && monsters[i].active && CheckCollisionCircles((*jogador).posicao, 10, monsters[i].posicao, 20)){
+            (*jogador).posicao = (Vector2){100, 100};
 
             for (int j = 0; j < numMonstros; j++){
                 monsters[j].posicao = (Vector2){GetRandomValue(200, 600), GetRandomValue(150, 400)};
                 monsters[j].active = true;
             }
 
-            jogador.vidas--;
-            if (jogador.vidas <= 0){
+            (*jogador).vidas--;
+            if ((*jogador).vidas <= 0){
                     *gameOver = true;
             }
         }
